@@ -96,6 +96,13 @@ def build_position_index_column(max_len):
     # return torch.arange(max_len,dtype = torch.float32).reshape(-1,1)
     return torch.arange(max_len,dtype = torch.float32).unsqueeze(1)
     # return torch.arange(max_len,dtype = torch.float32).view(-1,1)
+    """
+    - all three statement generate same output, but the only difference is how they handle memory allocation
+    - view and unsqueeze is the fastest among the three because they don't create a copy in memory and simply update the meta data without moving to RAM. 
+    - unsqueeze is usally safer when adding one dimension
+    - view should be the preferred choice when dimensions are unknown
+    - reshape is slightly slower because it checks memory layout condition before proceeding. it is general purpose reshaping when memory structure is uncertain. 
+    """
 
 # Step 10 - fill_even_indices_with_sin (not yet solved)
 # TODO: implement
